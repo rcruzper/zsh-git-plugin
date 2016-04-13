@@ -27,7 +27,8 @@ function grebase() {
     local branches branch
     branches=$(git branch -r | grep -v HEAD) &&
     branch=$(echo "$branches" | fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
-    git fetch $(echo "$branch" | sed "s/.* //" | cut -d "/" -f 2) $(echo "$branch" | sed "s/.* //" | cut -d "/" -f 3)
+    git fetch $(echo "$branch" | sed "s/.* //" | cut -d "/" -f 1) $(echo "$branch" | sed "s/.* //" | cut -d "/" -f 2-15) &&
+    git rebase FETCH_HEAD
 }
 
 # grebase - interactive rebase
