@@ -1,5 +1,5 @@
 # gcheckout - checkout local|remote branch
-function gcb() {
+function gcheckout() {
     local branches branch
     branches=$(git branch --all | grep -v HEAD) && 
     branch=$(echo "$branches" | fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
