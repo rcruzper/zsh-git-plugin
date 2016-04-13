@@ -1,5 +1,5 @@
 # gcheckout - checkout local|remote branch
-gcb() {
+function gcb() {
     local branches branch
     branches=$(git branch --all | grep -v HEAD) && 
     branch=$(echo "$branches" | fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
@@ -7,7 +7,7 @@ gcb() {
 }
 
 # gshow - commit browser
-gshow() {
+function gshow() {
     git log --graph --color=always \
         --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
     fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
@@ -15,7 +15,7 @@ gshow() {
 }
 
 # gcshow - get git commit sha
-gcshow() {
+function gcshow() {
     git rebase -i `local commits commit
     commits=$(git log --color=always --pretty=oneline --abbrev-commit --reverse) &&
     commit=$(echo "$commits" | fzf --tac +s +m -e --ansi --reverse) &&
@@ -30,7 +30,7 @@ alias grebase='git rebase -i `gcshow`'
 # # enter shows you the contents of the stash
 # # ctrl-d shows a diff of the stash against your current HEAD
 # # ctrl-b checks the stash out as a branch, for easier merging
-gstash() {
+function gstash() {
     local out q k sha
     while out=$(
         git stash list --pretty="%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs" |
