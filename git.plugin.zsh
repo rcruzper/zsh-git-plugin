@@ -1,7 +1,7 @@
 # gcheckout - checkout local|remote branch
 function gcheckout() {
     local branches branch
-    branches=$(git branch --all | grep -v HEAD) && 
+    branches=$(git branch --all | grep -v HEAD) &&
     branch=$(echo "$branches" | fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
     git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
@@ -22,8 +22,16 @@ function gcshow() {
     echo -n $(echo "$commit" | sed "s/ .*//")
 }
 
+# gcheckout - checkout local|remote branch
+function grebase() {
+    local branches branch
+    branches=$(git branch --all | grep -v HEAD) &&
+    branch=$(echo "$branches" | fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+    git rebase $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
 # grebase - interactive rebase
-alias grebase='git rebase -i `gcshow`'
+alias grebasei='git rebase -i `gcshow`'
 
 # fstash - easier way to deal with stashes
 # # type fstash to get a list of your stashes
