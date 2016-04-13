@@ -25,9 +25,9 @@ function gcshow() {
 # gcheckout - checkout local|remote branch
 function grebase() {
     local branches branch
-    branches=$(git branch --all | grep -v HEAD) &&
+    branches=$(git branch -r | grep -v HEAD) &&
     branch=$(echo "$branches" | fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
-    git rebase $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+    git fetch $(echo "$branch" | sed "s/.* //" | cut -d "/" -f 2) $(echo "$branch" | sed "s/.* //" | cut -d "/" -f 3)
 }
 
 # grebase - interactive rebase
