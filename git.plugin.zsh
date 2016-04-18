@@ -18,7 +18,6 @@ function gshow() {
 FZF-EOF"
 }
 
-
 # gcshow - get git commit sha
 function gcshow() {
     local commits commit
@@ -38,6 +37,14 @@ function grebase() {
 
 # grebase - interactive rebase
 alias grebasei='git rebase -i `gcshow`'
+
+# gdelete - branch -d of merged branches
+function gdelete() {
+    local branches branch
+    branches=$(git branch --merge) &&
+        branch=$(echo "$branches" | fzf-tmux -d 15 +s +m) &&
+        git branch -d $(echo "$branch" | sed "s/.* //")
+}
 
 # fstash - easier way to deal with stashes
 # # type fstash to get a list of your stashes
