@@ -49,3 +49,10 @@ function gdelete() {
         branch=$(echo "$branches" | fzf-tmux -d 15 +s +m) &&
         git branch -d $(echo "$branch" | sed "s/.* //")
 }
+
+# gpremotes - creates local branches of all remote branches
+function gpremotes(){
+    for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v $(git rev-parse --abbrev-ref HEAD) `; do
+        git branch --track ${branch#remotes/origin/} $branch
+    done
+}

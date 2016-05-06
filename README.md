@@ -24,6 +24,9 @@ It shows a list of merged branches with the actual branch and allows to select o
 ### gcshow
 Returns the SHA-1 of a commit from a list of commits.
 
+### gpremotes
+Creates local branches of all remote branches.
+
 ## Notes
 If you want to get a zsh shell fully functional see my [dotfiles](https://github.com/rcruzper/dotfiles)
 
