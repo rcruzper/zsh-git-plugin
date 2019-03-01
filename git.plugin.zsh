@@ -14,12 +14,40 @@ function gcheckout() {
 function gshow() {
     git log --graph --color=always \
         --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-    fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+    fzf --select-1 --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
         --bind "ctrl-m:execute:
                   (grep -o '[a-f0-9]\{7\}' | head -1 |
                   xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
                   {}
 FZF-EOF"
+}
+
+# gfix - git commit -a --fixup
+function gfix() {
+    local commits commitId
+    commits=$(git log --oneline --decorate)
+    while read -r commit; do
+        if [[ $commit != *fixup\!* ]]; then
+            commitId=$(echo $commit | awk '{print $1;}')
+            git commit -a --fixup $commitId
+            break
+        fi
+    done <<< "$commits"
+}
+
+# grauto - git rebase -i --autosquash 
+function grauto() {
+    local commits
+    commits=$(git log --oneline --decorate)
+    local counter=0
+    while read -r commit; do
+        if [[ $commit == *fixup\!* ]]; then
+            counter=$((counter+1))
+        else
+            GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash HEAD~$((counter+1))
+            break
+        fi
+    done <<< "$commits"
 }
 
 # gcshow - get git commit SHA-1
